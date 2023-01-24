@@ -3,20 +3,23 @@ package com.acccenture.banktrialprojectbed.entity;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 @Entity
 @RequiredArgsConstructor
 public class Account {
 
     @Id
-    @OneToOne
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int accountId;
-    private String accountType;
+    private String accountType; // Savings // Current // Credit
     private String bankName;
     private double bankBalance;
+    private double bankWithdrawal;
     private double bankCreditLimit;
-    private double bankRemainingLimit;
+    private double bankCreditRemainingLimit;
     private double bankCreditBalance;
+    private double bankCreditPayment;
 }
