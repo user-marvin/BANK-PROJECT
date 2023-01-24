@@ -1,13 +1,13 @@
-CREATE TABLE accounts(
-	accountId int not null auto_increment,
-    accountType varchar(255) not null,
-    bankName varchar(255) not null,
-    bankBalance double not null,
-    bankDeposit double not null,
-    bankWithdrawal double not null,
-    bankCreditLimit double not null,
-    bankCreditRemainingLimit double not null,
-    bankCreditBalance double not null,
-    bankCreditPayment double not null,
-    primary key (accountId)
+CREATE TABLE `bank_db`.`accounts`(
+	account_id int not null auto_increment,
+    account_type varchar(255) not null,
+    bank_name varchar(255) not null,
+    bank_balance double not null,
+    bank_deposit double not null,
+    bank_withdrawal double not null,
+    bank_credit_limit double not null,
+    bank_credit_remaining_limit double not null,
+    bank_credit_balance double not null,
+    bank_credit_payment double not null,
+    primary key (account_id)
 );

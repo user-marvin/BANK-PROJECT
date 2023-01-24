@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name = "clients")
@@ -37,8 +36,8 @@ public class Client {
     @Column(name = "admin_user")
     private Boolean adminUser; // 0 = Client // 1 = Admin
 
-    @OneToMany
-    @JoinColumn(name = "account_id")
-    @Column(name = "accountId")
-    private List<BankAccount> account;
+//    @OneToMany
+//    @JoinColumn(name = "account_id")
+//    @Column(name = "accountId")
+//    private List<BankAccount> account;
 }
