@@ -1,7 +1,9 @@
 package com.acccenture.banktrialprojectbed.repository;
 
-import com.acccenture.banktrialprojectbed.entity.Account;
+import com.acccenture.banktrialprojectbed.entity.BankAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface AccountRepo extends JpaRepository<Account, Integer> {
+@Repository
+public interface AccountRepo extends JpaRepository<BankAccount, Integer> {
 }
