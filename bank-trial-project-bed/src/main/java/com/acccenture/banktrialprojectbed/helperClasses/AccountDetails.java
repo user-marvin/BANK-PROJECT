@@ -10,5 +10,6 @@ import lombok.Setter;
 public class AccountDetails {
     private int accountNumber;
     private int accountPasscode;
+    private int receiverAccountNumber;
     private double amount;
 }

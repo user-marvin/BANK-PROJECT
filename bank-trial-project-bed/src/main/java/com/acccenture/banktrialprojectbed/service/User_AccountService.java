@@ -41,7 +41,7 @@ public class User_AccountService {
                                     && bankAccount.getAccountPasscode() == accountDetails.getAccountPasscode())
                             .findFirst();
             account.get().setBankBalance(account.get().getBankBalance()+ accountDetails.getAmount());
-            return account.get();
+            return accountRepo.save(account.get());
         }catch (NoSuchElementException e){
             throw new BankException(BankException.NO_ACCOUNTS_FOUND, e.getCause());
         }
@@ -62,7 +62,7 @@ public class User_AccountService {
             }else{
                 account.get().setBankBalance(remainingBalance);
             }
-            return account.get();
+            return accountRepo.save(account.get());
         }catch (NoSuchElementException e){
             throw new BankException(BankException.NO_ACCOUNTS_FOUND, e.getCause());
         }
@@ -83,7 +83,15 @@ public class User_AccountService {
             }else{
                 account.get().setBankBalance(remainingBalance);
             }
-            return account.get();
+
+            Optional<BankAccount> receiverAccount =
+                    allAccounts
+                            .stream()
+                            .filter(bankAccount -> bankAccount.getAccountNumber()
+                                    == accountDetails.getReceiverAccountNumber()).findFirst();
+            receiverAccount.get().setBankBalance(receiverAccount.get().getBankBalance()+accountDetails.getAmount());
+            accountRepo.save(receiverAccount.get());
+            return accountRepo.save(account.get());
         }catch (NoSuchElementException e){
             throw new BankException(BankException.ACCOUNT_DO_NOT_EXIST, e.getCause());
         }

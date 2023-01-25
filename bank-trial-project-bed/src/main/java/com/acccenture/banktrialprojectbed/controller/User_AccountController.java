@@ -29,4 +29,8 @@ public class User_AccountController {
     public ResponseEntity<BankAccount> withdraw(@RequestBody AccountDetails accountDetails) throws BankException {
         return ResponseEntity.status(HttpStatus.OK).body(user_accountService.withdrawMoney(accountDetails));
     }
+    @PutMapping("/transfer")
+    public ResponseEntity<BankAccount> transfer(@RequestBody AccountDetails accountDetails) throws BankException {
+        return ResponseEntity.status(HttpStatus.OK).body(user_accountService.transferMoney(accountDetails));
+    }
 }
