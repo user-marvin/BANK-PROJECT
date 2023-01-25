@@ -1,6 +1,7 @@
 package com.acccenture.banktrialprojectbed.service;
 
 import com.acccenture.banktrialprojectbed.entity.Client;
+import com.acccenture.banktrialprojectbed.entity.LoginHelper;
 import com.acccenture.banktrialprojectbed.exception.BankException;
 import com.acccenture.banktrialprojectbed.repository.ClientRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,107 +20,147 @@ public class Admin_ClientService {
     ClientRepo clientRepo;
     List<Client> allClients = new ArrayList<>();
 
-    public Client adminLogin(String userName, String password) throws BankException {
+
+    public Client adminLogin(LoginHelper loginHelper) throws BankException {
         allClients = clientRepo.findAll();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         try{
-            Optional<Client> matchedClient = allClients
-                    .stream()
-                    .filter(
-                            client -> client.getUserName().equals(userName)
-                                    && client.getPassword().equals(password)).findFirst();
-            return matchedClient.get();
+            loginHelper.setPassword(
+                    passwordEncoder
+                            .encode(loginHelper.getPassword()));
+            Optional<Client> loginClient =
+                    allClients
+                            .stream()
+                            .filter(client ->
+                                    client.getUserName()
+                                            .equals(loginHelper.getUserName())
+                                            && client.getPassword()
+                                            .equals(loginHelper.getPassword()))
+                            .findFirst();
+            return loginClient.get();
         }catch (NoSuchElementException e){
-            throw new BankException(BankException.USERNAME_PASSWORD_INCORRECT);
+            throw new BankException(BankException.USERNAME_PASSWORD_INCORRECT, e.getCause());
         }
     }
 
-    // View all account. Privilege: admin
+    // View all Client. Privilege: admin
     public List<Client> viewAllClient(){
         allClients = clientRepo.findAll();
         return clientRepo.findAll();
     }
 
-    // View an account. Privilege: admin, client
-    public Client viewSingleClient(String userName) throws BankException {
+    // View a Client. Privilege: admin, client
+    public Client viewSingleClient
+    (String userName)
+            throws BankException {
         allClients = clientRepo.findAll();
         try{
-            Optional<Client> singleClient = allClients.stream().filter(client -> client.getUserName().equals(userName)).findFirst();
+            Optional<Client> singleClient =
+                    allClients
+                            .stream()
+                            .filter(client -> client.getUserName()
+                                    .equals(userName)).findFirst();
 
             return singleClient.get();
         }catch (NoSuchElementException e){
-            throw new BankException(BankException.ACCOUNT_DO_NOT_EXIST);
+            throw new BankException
+                    (BankException.ACCOUNT_DO_NOT_EXIST, e.getCause());
         }
     }
 
-    // Register an account. Privilege: admin, client
-    public Client registerClient(Client client) throws BankException {
+    // Register a Client. Privilege: admin, client
+    public Client registerClient
+    (Client client)
+            throws BankException {
         allClients = clientRepo.findAll();
         try{
             Optional<Client> checkingUsername = allClients
                     .stream().
                     filter(clients ->
-                            clients.getUserName() != client.getUserName()).findFirst();
+                            clients.getUserName()
+                                    != client.getUserName()).findFirst();
 
             // Create a BCryptoPasswordEncoder
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String hashedPassword = passwordEncoder.encode(client.getPassword());
+            BCryptPasswordEncoder passwordEncoder =
+                    new BCryptPasswordEncoder();
+            String hashedPassword =
+                    passwordEncoder.encode(client.getPassword());
             client.setPassword(hashedPassword);
             return clientRepo.save(client);
         }catch (NoSuchElementException e){
-            throw new BankException(BankException.USERNAME_ALREADY_EXIST);
+            throw new BankException
+                    (BankException.USERNAME_ALREADY_EXIST, e.getCause());
         }
     }
 
-    // Update an account. Privilege: admin, client
-    public Client updateClient(Client client) throws BankException{
+    // Update a Client. Privilege: admin, client
+    public Client updateClient(Client client)
+            throws BankException{
         allClients = clientRepo.findAll();
         try{
             Optional<Client> checkingUsername = allClients
                     .stream().
-                    filter(clients ->
-                            clients
+                    filter(clients -> clients
                                     .getUserName()
-                                    .equals(client.getUserName())).findFirst();
+                                    .equals(client.getUserName()))
+                    .findFirst();
             return clientRepo.save(client);
         }catch(NoSuchElementException e){
-            throw new BankException(BankException.ACCOUNT_DO_NOT_EXIST);
+            throw new BankException
+                    (BankException.ACCOUNT_DO_NOT_EXIST, e.getCause());
         }
     }
 
 
-    // Archive an account. Privilege: admin, client
-    public String archiveClient(Client client) throws BankException {
+    // Archive a Client. Privilege: admin, client
+    public Client archiveClient(Client client) throws BankException {
         allClients = clientRepo.findAll();
         try{
             Optional<Client> checkingUsername = allClients
                     .stream().
                     filter(clients ->
-                            clients.getClientId() == client.getClientId()).findFirst();
-            return BankException.ACCOUNT_ARCHIVED;
+                            clients.getClientId()
+                                    == client.getClientId())
+                    .findFirst();
+            Client foundClient = checkingUsername.get();
+            foundClient.setArchived(true);
+            return clientRepo.save(foundClient);
         }catch (NoSuchElementException e){
-            throw new BankException(BankException.ACCOUNT_DO_NOT_EXIST);
+            throw new BankException
+                    (BankException.ACCOUNT_DO_NOT_EXIST, e.getCause());
         }
     }
 
 
-    // Delete an account. Privilege: admin
+    // Delete a Client. Privilege: admin
     public String deleteClient(int id) throws BankException {
         allClients = clientRepo.findAll();
         try{
             clientRepo.deleteById(id);
             return BankException.ACCOUNT_DEACTIVATED;
         }catch (NullPointerException e){
-            throw new BankException(BankException.ACCOUNT_DO_NOT_EXIST);
+            throw new BankException
+                    (BankException.ACCOUNT_DO_NOT_EXIST, e.getCause());
         }
     }
 
     public Boolean checkPasswordMatch(String password){
         allClients = clientRepo.findAll();
 
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String hashedPassword = passwordEncoder.encode(password);
+        BCryptPasswordEncoder passwordEncoder =
+                new BCryptPasswordEncoder();
+        String hashedPassword =
+                passwordEncoder.encode(password);
 
-        Optional<Client> isMatch = allClients.stream().filter(client -> client.getPassword().equals(hashedPassword)).findFirst();
+        Optional<Client> isMatch =
+                allClients
+                        .stream()
+                        .filter(client ->
+                                client.getPassword()
+                                        .equals(hashedPassword))
+                        .findFirst();
         return isMatch != null;
     }
+
 }
+

@@ -1,14 +1,16 @@
 package com.acccenture.banktrialprojectbed.service;
 
 import com.acccenture.banktrialprojectbed.entity.Client;
+import com.acccenture.banktrialprojectbed.entity.LoginHelper;
 import com.acccenture.banktrialprojectbed.exception.BankException;
 import com.acccenture.banktrialprojectbed.repository.ClientRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Optional;
 
 @Service
 public class User_ClientService {
@@ -18,17 +20,25 @@ public class User_ClientService {
     List<Client> allClients = new ArrayList<>();
     @Autowired
     Admin_ClientService admin_clientService;
-    public Client login(String userName, String password) throws BankException {
+    public Client clientLogin(LoginHelper loginHelper) throws BankException {
         allClients = clientRepo.findAll();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         try{
-            Stream<Client> matchedClient = allClients
-                    .stream()
-                    .filter(
-                            client -> client.getUserName().equals(userName)
-                                    && client.getPassword().equals(password));
-            return (Client) matchedClient;
+            loginHelper.setPassword(
+                    passwordEncoder
+                            .encode(loginHelper.getPassword()));
+            Optional<Client> loginClient =
+                    allClients
+                            .stream()
+                            .filter(client ->
+                                    client.getUserName()
+                                            .equals(loginHelper.getUserName())
+                                            && client.getPassword()
+                                            .equals(loginHelper.getPassword()))
+                            .findFirst();
+            return loginClient.get();
         }catch (NullPointerException e){
-            throw new BankException(BankException.USERNAME_PASSWORD_INCORRECT);
+            throw new BankException(BankException.USERNAME_PASSWORD_INCORRECT, e.getCause());
         }
     }
     public Client register(Client client) throws BankException {
@@ -39,7 +49,7 @@ public class User_ClientService {
         return admin_clientService.viewSingleClient(userName);
     }
 
-    public String archiveClient(Client client) throws BankException {
+    public Client archiveClient(Client client) throws BankException {
         return admin_clientService.archiveClient(client);
     }
 
