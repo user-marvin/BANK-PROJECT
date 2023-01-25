@@ -1,7 +1,7 @@
 package com.acccenture.banktrialprojectbed.controller;
 
 import com.acccenture.banktrialprojectbed.entity.Client;
-import com.acccenture.banktrialprojectbed.entity.LoginHelper;
+import com.acccenture.banktrialprojectbed.helperClasses.LoginHelper;
 import com.acccenture.banktrialprojectbed.exception.BankException;
 import com.acccenture.banktrialprojectbed.service.Admin_ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/adminClient")
 public class Admin_ClientController {
     @Autowired
     Admin_ClientService admin_clientService;

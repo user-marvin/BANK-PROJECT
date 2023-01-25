@@ -14,7 +14,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class Client {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "client_id")
@@ -35,9 +34,4 @@ public class Client {
     private Boolean archived;
     @Column(name = "admin_user")
     private Boolean adminUser; // 0 = Client // 1 = Admin
-
-//    @OneToMany
-//    @JoinColumn(name = "account_id")
-//    @Column(name = "accountId")
-//    private List<BankAccount> account;
 }

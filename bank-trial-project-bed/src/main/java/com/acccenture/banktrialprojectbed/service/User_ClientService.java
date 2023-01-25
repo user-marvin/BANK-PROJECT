@@ -1,7 +1,8 @@
 package com.acccenture.banktrialprojectbed.service;
 
+import com.acccenture.banktrialprojectbed.credentials.LocalRepo;
 import com.acccenture.banktrialprojectbed.entity.Client;
-import com.acccenture.banktrialprojectbed.entity.LoginHelper;
+import com.acccenture.banktrialprojectbed.helperClasses.LoginHelper;
 import com.acccenture.banktrialprojectbed.exception.BankException;
 import com.acccenture.banktrialprojectbed.repository.ClientRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,22 +24,18 @@ public class User_ClientService {
     public Client clientLogin(LoginHelper loginHelper) throws BankException {
         allClients = clientRepo.findAll();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        LocalRepo.userName = loginHelper.getUserName();
         try{
-            loginHelper.setPassword(
-                    passwordEncoder
-                            .encode(loginHelper.getPassword()));
-            Optional<Client> loginClient =
-                    allClients
-                            .stream()
-                            .filter(client ->
-                                    client.getUserName()
-                                            .equals(loginHelper.getUserName())
-                                            && client.getPassword()
-                                            .equals(loginHelper.getPassword()))
+            Optional<Client> loginClient = allClients
+                    .stream()
+                    .filter(client -> client.getUserName().equals(loginHelper.getUserName())
+                            && passwordEncoder.matches(loginHelper.getPassword(), client.getPassword()))
                             .findFirst();
             return loginClient.get();
         }catch (NullPointerException e){
-            throw new BankException(BankException.USERNAME_PASSWORD_INCORRECT, e.getCause());
+            throw new BankException
+                    (BankException.USERNAME_PASSWORD_INCORRECT
+                            , e.getCause());
         }
     }
     public Client register(Client client) throws BankException {
@@ -46,6 +43,7 @@ public class User_ClientService {
     }
 
     public Client viewClient(String userName) throws BankException{
+        System.out.println(LocalRepo.userName);
         return admin_clientService.viewSingleClient(userName);
     }
 

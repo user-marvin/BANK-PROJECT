@@ -1,7 +1,7 @@
 package com.acccenture.banktrialprojectbed.service;
 
 import com.acccenture.banktrialprojectbed.entity.Client;
-import com.acccenture.banktrialprojectbed.entity.LoginHelper;
+import com.acccenture.banktrialprojectbed.helperClasses.LoginHelper;
 import com.acccenture.banktrialprojectbed.exception.BankException;
 import com.acccenture.banktrialprojectbed.repository.ClientRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,6 @@ public class Admin_ClientService {
     @Autowired
     ClientRepo clientRepo;
     List<Client> allClients = new ArrayList<>();
-
 
     public Client adminLogin(LoginHelper loginHelper) throws BankException {
         allClients = clientRepo.findAll();
@@ -144,22 +143,20 @@ public class Admin_ClientService {
         }
     }
 
-    public Boolean checkPasswordMatch(String password){
+    public Client checkPasswordMatch(String password){
         allClients = clientRepo.findAll();
 
         BCryptPasswordEncoder passwordEncoder =
                 new BCryptPasswordEncoder();
-        String hashedPassword =
-                passwordEncoder.encode(password);
 
         Optional<Client> isMatch =
                 allClients
                         .stream()
                         .filter(client ->
-                                client.getPassword()
-                                        .equals(hashedPassword))
+                                passwordEncoder.matches(password, client.getPassword()))
                         .findFirst();
-        return isMatch != null;
+
+        return isMatch.get();
     }
 
 }

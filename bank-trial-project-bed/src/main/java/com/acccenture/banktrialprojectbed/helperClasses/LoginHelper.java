@@ -1,4 +1,4 @@
-package com.acccenture.banktrialprojectbed.entity;
+package com.acccenture.banktrialprojectbed.helperClasses;
 
 
 import lombok.Getter;

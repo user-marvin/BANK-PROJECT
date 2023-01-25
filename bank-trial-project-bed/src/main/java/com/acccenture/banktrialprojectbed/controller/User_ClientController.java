@@ -2,8 +2,9 @@ package com.acccenture.banktrialprojectbed.controller;
 
 
 import com.acccenture.banktrialprojectbed.entity.Client;
-import com.acccenture.banktrialprojectbed.entity.LoginHelper;
+import com.acccenture.banktrialprojectbed.helperClasses.LoginHelper;
 import com.acccenture.banktrialprojectbed.exception.BankException;
+import com.acccenture.banktrialprojectbed.service.Admin_ClientService;
 import com.acccenture.banktrialprojectbed.service.User_ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/client")
+@RequestMapping("/api/userClient")
 public class User_ClientController {
 
     @Autowired
@@ -59,5 +60,16 @@ public class User_ClientController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(user_clientService.updateAccount(client));
+    }
+
+    @Autowired
+    Admin_ClientService admin_clientService;
+    @GetMapping("/checkPassword/{password}")
+    public ResponseEntity<Client> checkPassword
+            (@PathVariable String password)
+            throws BankException {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(admin_clientService.checkPasswordMatch(password));
     }
 }
