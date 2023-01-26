@@ -3,6 +3,7 @@ package com.acccenture.banktrialprojectbed.service;
 
 import com.acccenture.banktrialprojectbed.entity.BankAccount;
 import com.acccenture.banktrialprojectbed.exception.BankException;
+import com.acccenture.banktrialprojectbed.finalVariables.FinalVariables;
 import com.acccenture.banktrialprojectbed.helperClasses.AccountDetails;
 import com.acccenture.banktrialprojectbed.repository.AccountRepo;
 import com.acccenture.banktrialprojectbed.repository.ClientRepo;
@@ -31,6 +32,7 @@ public class User_AccountService {
     public BankAccount openAccount(BankAccount bankAccount) throws BankException {
         return admin_accountService.openAccount(bankAccount);
     }
+
     public BankAccount depositMoney(AccountDetails accountDetails) throws BankException {
         allAccounts = accountRepo.findAll();
         try{
@@ -70,33 +72,34 @@ public class User_AccountService {
 
     public BankAccount transferMoney(AccountDetails accountDetails) throws BankException{
         allAccounts = accountRepo.findAll();
+        double remainingBalance;
         try{
             Optional<BankAccount> account = allAccounts
                     .stream()
                     .filter(bankAccount -> bankAccount.getAccountNumber() == accountDetails.getAccountNumber()
                             && bankAccount.getAccountPasscode() == accountDetails.getAccountPasscode())
                     .findFirst();
-            double remainingBalance = account.get().getBankBalance() - accountDetails.getAmount();
+            Optional<BankAccount> receiverAccount =
+                    allAccounts
+                            .stream()
+                            .filter(bankAccount -> bankAccount.getAccountNumber()
+                                    == accountDetails.getReceiverAccountNumber()).findFirst();
+
+            if(!account.get().getBankName().equals(receiverAccount.get().getBankName())){
+                remainingBalance = account.get().getBankBalance() - accountDetails.getAmount() - FinalVariables.OTHERBANKTRANSFERCHARGE;
+            }else{
+                remainingBalance = account.get().getBankBalance() - accountDetails.getAmount();
+            }
 
             if(remainingBalance < 0){
                 throw new BankException(BankException.INSUFFICIENT_BALANCE_FOR_TRANSFER);
             }else{
                 account.get().setBankBalance(remainingBalance);
             }
-
-            Optional<BankAccount> receiverAccount =
-                    allAccounts
-                            .stream()
-                            .filter(bankAccount -> bankAccount.getAccountNumber()
-                                    == accountDetails.getReceiverAccountNumber()).findFirst();
-            receiverAccount.get().setBankBalance(receiverAccount.get().getBankBalance()+accountDetails.getAmount());
             accountRepo.save(receiverAccount.get());
             return accountRepo.save(account.get());
         }catch (NoSuchElementException e){
             throw new BankException(BankException.ACCOUNT_DO_NOT_EXIST, e.getCause());
         }
     }
-
-
-
 }

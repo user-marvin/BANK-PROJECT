@@ -143,21 +143,21 @@ public class Admin_ClientService {
         }
     }
 
-    public Client checkPasswordMatch(String password){
-        allClients = clientRepo.findAll();
-
-        BCryptPasswordEncoder passwordEncoder =
-                new BCryptPasswordEncoder();
-
-        Optional<Client> isMatch =
-                allClients
-                        .stream()
-                        .filter(client ->
-                                passwordEncoder.matches(password, client.getPassword()))
-                        .findFirst();
-
-        return isMatch.get();
-    }
+//    public Client checkPasswordMatch(String password){
+//        allClients = clientRepo.findAll();
+//
+//        BCryptPasswordEncoder passwordEncoder =
+//                new BCryptPasswordEncoder();
+//
+//        Optional<Client> isMatch =
+//                allClients
+//                        .stream()
+//                        .filter(client ->
+//                                passwordEncoder.matches(password, client.getPassword()))
+//                        .findFirst();
+//
+//        return isMatch.get();
+//    }
 
 }
 

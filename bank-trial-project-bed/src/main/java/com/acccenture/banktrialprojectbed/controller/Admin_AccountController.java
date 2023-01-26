@@ -2,6 +2,7 @@ package com.acccenture.banktrialprojectbed.controller;
 
 import com.acccenture.banktrialprojectbed.entity.BankAccount;
 import com.acccenture.banktrialprojectbed.exception.BankException;
+import com.acccenture.banktrialprojectbed.helperClasses.AccountDetails;
 import com.acccenture.banktrialprojectbed.service.Admin_AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,5 +28,10 @@ public class Admin_AccountController {
     @GetMapping("/getAccounts")
     public ResponseEntity<List> getAccounts() throws BankException {
         return ResponseEntity.status(HttpStatus.OK).body(admin_accountService.getClientAccounts());
+    }
+
+    @DeleteMapping("closeAccount")
+    public ResponseEntity<String> closeAccount(@RequestBody AccountDetails accountDetails) throws BankException {
+        return ResponseEntity.status(HttpStatus.OK).body(admin_accountService.closeAccount(accountDetails));
     }
 }

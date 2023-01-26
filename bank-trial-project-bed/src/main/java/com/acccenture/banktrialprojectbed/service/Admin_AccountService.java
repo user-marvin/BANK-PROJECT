@@ -4,6 +4,8 @@ import com.acccenture.banktrialprojectbed.credentials.LocalRepo;
 import com.acccenture.banktrialprojectbed.entity.BankAccount;
 import com.acccenture.banktrialprojectbed.entity.Client;
 import com.acccenture.banktrialprojectbed.exception.BankException;
+import com.acccenture.banktrialprojectbed.finalVariables.FinalVariables;
+import com.acccenture.banktrialprojectbed.helperClasses.AccountDetails;
 import com.acccenture.banktrialprojectbed.repository.AccountRepo;
 import com.acccenture.banktrialprojectbed.repository.ClientRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +33,16 @@ public class Admin_AccountService {
     // Can only be accessed when logged in.
     public BankAccount openAccount(BankAccount bankAccount) throws BankException {
         allClients = clientRepo.findAll();
-        try{
+        allAccounts = accountRepo.findAll();
+        final int min = 100000, max = 999999;
+        try {
             Optional<Client> getClient = allClients.stream().filter(client -> client.getUserName().equals(LocalRepo.userName)).findFirst();
             bankAccount.setClient(getClient.get());
+            Optional<BankAccount> accountMatch;
+            do {
+                int accountNumber = min + (int) (Math.random() * (max - min) + 1);
+                accountMatch = allAccounts.stream().filter(account -> account.getAccountNumber() == accountNumber).findFirst();
+            } while (accountMatch.isPresent());
             return accountRepo.save(bankAccount);
         }catch (NoSuchElementException e){
             throw new BankException(BankException.ACCOUNT_DO_NOT_EXIST, e.getCause());
@@ -56,5 +65,18 @@ public class Admin_AccountService {
         }
     }
 
-
+    public String closeAccount(AccountDetails accountDetails) throws BankException{
+        allAccounts = accountRepo.findAll();
+        try{
+            Optional<BankAccount> account =
+                    allAccounts
+                            .stream()
+                            .filter(bankAccount -> bankAccount.getAccountNumber() == accountDetails.getAccountNumber())
+                            .findFirst();
+            accountRepo.deleteById(account.get().getAccountId());
+            return FinalVariables.ACCOUNT_CLOSED_SUCCESSFULLY;
+        }catch (NoSuchElementException e){
+            throw  new BankException(BankException.ACCOUNT_DO_NOT_EXIST);
+        }
+    }
 }

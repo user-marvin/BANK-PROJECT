@@ -17,7 +17,7 @@ public class User_AccountController {
     User_AccountService user_accountService;
 
 
-    @PostMapping
+    @PostMapping("/openAccount")
     public ResponseEntity<BankAccount> openAccount(@RequestBody BankAccount bankAccount) throws BankException {
         return ResponseEntity.status(HttpStatus.OK).body(user_accountService.openAccount(bankAccount));
     }
