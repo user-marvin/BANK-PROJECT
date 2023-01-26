@@ -1,5 +1,6 @@
 package com.acccenture.banktrialprojectbed.service;
 
+import com.acccenture.banktrialprojectbed.credentials.LocalRepo;
 import com.acccenture.banktrialprojectbed.entity.Client;
 import com.acccenture.banktrialprojectbed.helperClasses.LoginHelper;
 import com.acccenture.banktrialprojectbed.exception.BankException;
@@ -23,22 +24,18 @@ public class Admin_ClientService {
     public Client adminLogin(LoginHelper loginHelper) throws BankException {
         allClients = clientRepo.findAll();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        LocalRepo.userName = loginHelper.getUserName();
         try{
-            loginHelper.setPassword(
-                    passwordEncoder
-                            .encode(loginHelper.getPassword()));
-            Optional<Client> loginClient =
-                    allClients
-                            .stream()
-                            .filter(client ->
-                                    client.getUserName()
-                                            .equals(loginHelper.getUserName())
-                                            && client.getPassword()
-                                            .equals(loginHelper.getPassword()))
-                            .findFirst();
+            Optional<Client> loginClient = allClients
+                    .stream()
+                    .filter(client -> client.getUserName().equals(loginHelper.getUserName())
+                            && passwordEncoder.matches(loginHelper.getPassword(), client.getPassword()))
+                    .findFirst();
             return loginClient.get();
-        }catch (NoSuchElementException e){
-            throw new BankException(BankException.USERNAME_PASSWORD_INCORRECT, e.getCause());
+        }catch (NullPointerException e){
+            throw new BankException
+                    (BankException.USERNAME_PASSWORD_INCORRECT
+                            , e.getCause());
         }
     }
 

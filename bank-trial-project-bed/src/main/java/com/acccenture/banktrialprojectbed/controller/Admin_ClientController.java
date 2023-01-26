@@ -19,8 +19,11 @@ public class Admin_ClientController {
 
     @GetMapping("/adminLogin")
     public ResponseEntity<Client> adminLogin
-            (@RequestBody LoginHelper loginHelper) throws BankException {
-        return ResponseEntity.status(HttpStatus.OK).body(admin_clientService.adminLogin(loginHelper));
+            (@RequestBody LoginHelper loginHelper)
+            throws BankException {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(admin_clientService.adminLogin(loginHelper));
     }
 
     @GetMapping("/viewAllClient")
