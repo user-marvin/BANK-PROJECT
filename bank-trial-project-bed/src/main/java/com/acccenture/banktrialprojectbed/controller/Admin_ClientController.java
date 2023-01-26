@@ -56,7 +56,7 @@ public class Admin_ClientController {
     }
 
     @PutMapping("/archiveClient")
-    public ResponseEntity<Client> archiveClient
+    public ResponseEntity<String> archiveClient
             (@RequestBody Client client)
             throws BankException {
         return ResponseEntity

@@ -47,7 +47,7 @@ public class User_ClientService {
         return admin_clientService.viewSingleClient(userName);
     }
 
-    public Client archiveClient(Client client) throws BankException {
+    public String archiveClient(Client client) throws BankException {
         return admin_clientService.archiveClient(client);
     }
 

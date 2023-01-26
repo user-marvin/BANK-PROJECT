@@ -34,4 +34,6 @@ public class Admin_AccountController {
     public ResponseEntity<String> closeAccount(@RequestBody AccountDetails accountDetails) throws BankException {
         return ResponseEntity.status(HttpStatus.OK).body(admin_accountService.closeAccount(accountDetails));
     }
+
+
 }
