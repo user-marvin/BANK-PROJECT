@@ -27,8 +27,10 @@ class Admin_ClientServiceTest {
     @Autowired
     AccountRepo accountRepo;
     @Autowired
-    Admin_ClientService admin_clientService;
+    AdminClientService admin_clientService;
     List<Client> allClients = new ArrayList<>();
+    @Autowired
+    LocalRepo localRepo;
 
     @Test
     void adminLogin() throws BankException {
@@ -120,11 +122,11 @@ class Admin_ClientServiceTest {
     @Test
     void updateClient() throws BankException {
         allClients = clientRepo.findAll();
-        LocalRepo.userName = "mike.ross";
+        localRepo.setUserName("mike.ross");
         Optional<Client> updatedClient =
                 allClients
                         .stream()
-                        .filter(client -> client.getUserName().equals(LocalRepo.userName)).findFirst();
+                        .filter(client -> client.getUserName().equals(localRepo.getUserName())).findFirst();
         updatedClient.get().setFullName("Michael Ross");
         updatedClient.get().setEmail("mike.ross@pearson_hardman.com");
 
@@ -136,17 +138,17 @@ class Admin_ClientServiceTest {
     @Test
     void archiveClient() throws BankException {
         allClients = clientRepo.findAll();
-        LocalRepo.userName = "marvin.villamar";
+        localRepo.setUserName("marvin.villamar");
         Optional<Client> expectedClient =
                 allClients
                         .stream()
-                        .filter(client -> client.getUserName().equals(LocalRepo.userName)).findFirst();
+                        .filter(client -> client.getUserName().equals(localRepo.getUserName())).findFirst();
         expectedClient.get().setArchived(true);
 
         Optional<Client> findClient =
                 allClients
                         .stream()
-                        .filter(client -> client.getUserName().equals(LocalRepo.userName)).findFirst();
+                        .filter(client -> client.getUserName().equals(localRepo.getUserName())).findFirst();
         clientRepo.save(findClient.get());
 
         String actualClient = admin_clientService.archiveClient(findClient.get());
@@ -157,11 +159,11 @@ class Admin_ClientServiceTest {
     @Test
     void deleteClient() throws BankException {
         allClients = clientRepo.findAll();
-        LocalRepo.userName = "marvin.villamar";
+        localRepo.setUserName("marvin.villamar");
         Optional<Client> clientToDelete =
                 allClients
                         .stream()
-                        .filter(client -> client.getUserName().equals(LocalRepo.userName))
+                        .filter(client -> client.getUserName().equals(localRepo.getUserName()))
                         .findFirst();
         assertEquals(BankException.ACCOUNT_DEACTIVATED, admin_clientService.deleteClient(clientToDelete.get().getClientId()));
     }

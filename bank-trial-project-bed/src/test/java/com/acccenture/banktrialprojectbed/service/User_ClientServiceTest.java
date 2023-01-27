@@ -23,10 +23,10 @@ class User_ClientServiceTest {
     @Autowired
     ClientRepo clientRepo;
     @Autowired
-    User_ClientService user_clientService;
+    UserClientService user_clientService;
     List<Client> allClients = new ArrayList<>();
 
-
+    LocalRepo localRepo = LocalRepo.getInstance();
     @Test
     void clientLogin() throws BankException {
         allClients = clientRepo.findAll();
@@ -58,20 +58,23 @@ class User_ClientServiceTest {
                 false,
                 false
         );
+
         Client actualClient = user_clientService.register(expectedClient);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        expectedClient.setPassword(passwordEncoder.encode(expectedClient.getPassword()));
         assertEquals(expectedClient, actualClient);
     }
 
     @Test
     void viewClient() throws BankException {
         allClients = clientRepo.findAll();
-        LocalRepo.userName = "marvin.villamar";
+        localRepo.setUserName("marvin.villamar");
         Optional<Client> expectedClient =
                 allClients
                         .stream()
-                        .filter(client -> client.getUserName().equals(LocalRepo.userName)).findFirst();
+                        .filter(client -> client.getUserName().equals(localRepo.getUserName())).findFirst();
 
-        Client actualClient = user_clientService.viewClient(LocalRepo.userName);
+        Client actualClient = user_clientService.viewClient(localRepo.getUserName());
 
         assertEquals(expectedClient.get(), actualClient);
     }
@@ -79,17 +82,17 @@ class User_ClientServiceTest {
     @Test
     void archiveClient() throws BankException {
         allClients = clientRepo.findAll();
-        LocalRepo.userName = "marvin.villamar";
+        localRepo.setUserName("marvin.villamar");
         Optional<Client> expectedClient =
                 allClients
                         .stream()
-                        .filter(client -> client.getUserName().equals(LocalRepo.userName)).findFirst();
+                        .filter(client -> client.getUserName().equals(localRepo.getUserName())).findFirst();
         expectedClient.get().setArchived(true);
 
         Optional<Client> findClient =
                 allClients
                         .stream()
-                        .filter(client -> client.getUserName().equals(LocalRepo.userName)).findFirst();
+                        .filter(client -> client.getUserName().equals(localRepo.getUserName())).findFirst();
         clientRepo.save(findClient.get());
 
         String actualClient = user_clientService.archiveClient(findClient.get());
@@ -100,11 +103,11 @@ class User_ClientServiceTest {
     @Test
     void updateAccount() throws BankException {
         allClients = clientRepo.findAll();
-        LocalRepo.userName = "mike.ross";
+        localRepo.setUserName("mike.ross");
         Optional<Client> updatedClient =
                 allClients
                         .stream()
-                        .filter(client -> client.getUserName().equals(LocalRepo.userName)).findFirst();
+                        .filter(client -> client.getUserName().equals(localRepo.getUserName())).findFirst();
         updatedClient.get().setFullName("Michael Ross");
         updatedClient.get().setEmail("mike.ross@pearson_hardman.com");
 

@@ -6,7 +6,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Column;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -35,10 +40,21 @@ public class Client {
     private String password;
     @Column(name = "archived")
     private Boolean archived;
-    @Column(name = "admin_user")
-    private Boolean adminUser; // 0 = Client // 1 = Admin
 
-    public Client(String fullName, String address, String email, LocalDate birthDate, String userName, String password, Boolean archived, Boolean adminUser) {
+
+    // 0 = Client // 1 = Admin
+    @Column(name = "admin_user")
+    private Boolean adminUser;
+
+    public Client(
+            String fullName
+            , String address
+            , String email
+            , LocalDate birthDate
+            , String userName
+            , String password
+            , Boolean archived
+            , Boolean adminUser) {
         this.fullName = fullName;
         this.address = address;
         this.email = email;
@@ -51,14 +67,33 @@ public class Client {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o){
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()){
+            return false;
+        }
         Client client = (Client) o;
-        return Objects.equals(fullName, client.fullName) && Objects.equals(address, client.address) && Objects.equals(email, client.email) && Objects.equals(birthDate, client.birthDate) && Objects.equals(userName, client.userName) && Objects.equals(password, client.password) && Objects.equals(archived, client.archived) && Objects.equals(adminUser, client.adminUser);
+        return Objects.equals(fullName, client.fullName)
+                && Objects.equals(address, client.address)
+                && Objects.equals(email, client.email)
+                && Objects.equals(birthDate, client.birthDate)
+                && Objects.equals(userName, client.userName)
+                && Objects.equals(password, client.password)
+                && Objects.equals(archived, client.archived)
+                && Objects.equals(adminUser, client.adminUser);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fullName, address, email, birthDate, userName, password, archived, adminUser);
+        return Objects.hash(
+                fullName
+                , address
+                , email
+                , birthDate
+                , userName
+                , password
+                , archived
+                , adminUser);
     }
 }

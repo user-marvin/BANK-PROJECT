@@ -1,0 +1,1 @@
+ 2javaXhrRsrc/main/java/com/acccenture/banktrialprojectbed/helperClasses/AccountDetails.java
