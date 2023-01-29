@@ -27,7 +27,7 @@ public class BankAccount {
     @Column(name = "account_number")
     private int accountNumber;
     @Column(name = "account_passcode")
-    private int accountPasscode;
+    private String accountPasscode;
 
     // Savings // Current // Credit
     @Column(name = "account_type")
@@ -54,4 +54,29 @@ public class BankAccount {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
+
+    public BankAccount(
+            String accountPasscode
+            , String accountType
+            , String bankName
+            , double bankBalance
+            , double bankDeposit
+            , double bankWithdrawal
+            , double bankCreditLimit
+            , double bankCreditRemainingLimit
+            , double bankCreditBalance
+            , double bankCreditPayment
+            , Client client) {
+        this.accountPasscode = accountPasscode;
+        this.accountType = accountType;
+        this.bankName = bankName;
+        this.bankBalance = bankBalance;
+        this.bankDeposit = bankDeposit;
+        this.bankWithdrawal = bankWithdrawal;
+        this.bankCreditLimit = bankCreditLimit;
+        this.bankCreditRemainingLimit = bankCreditRemainingLimit;
+        this.bankCreditBalance = bankCreditBalance;
+        this.bankCreditPayment = bankCreditPayment;
+        this.client = client;
+    }
 }

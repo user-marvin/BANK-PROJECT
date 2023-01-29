@@ -18,7 +18,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-class User_ClientServiceTest {
+class UserClientServiceTest {
 
     @Autowired
     ClientRepo clientRepo;
@@ -87,7 +87,7 @@ class User_ClientServiceTest {
                 allClients
                         .stream()
                         .filter(client -> client.getUserName().equals(localRepo.getUserName())).findFirst();
-        expectedClient.get().setArchived(true);
+        expectedClient.get().setIsArchived(true);
 
         Optional<Client> findClient =
                 allClients

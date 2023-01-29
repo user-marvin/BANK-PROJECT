@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 public class AccountDetails {
     private int accountNumber;
-    private int accountPasscode;
+    private String accountPasscode;
     private int receiverAccountNumber;
     private double amount;
+    private double amountToCredit;
 }

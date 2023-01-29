@@ -5,7 +5,7 @@ CREATE TABLE bank_db.bank_accounts (
   account_type VARCHAR(255) NOT NULL,
   bank_name VARCHAR(255) NOT NULL,
   bank_balance DOUBLE NOT NULL,
-  bank_cash_in DOUBLE NOT NULL,
+  bank_deposit DOUBLE NOT NULL,
   bank_withdrawal DOUBLE NOT NULL,
   bank_credit_limit DOUBLE NOT NULL,
   bank_credit_remaining_limit DOUBLE NOT NULL,

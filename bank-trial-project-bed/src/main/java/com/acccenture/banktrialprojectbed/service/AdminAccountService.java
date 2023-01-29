@@ -26,7 +26,7 @@ public class AdminAccountService {
     List<Client> allClients = new ArrayList<>();
     List<BankAccount> allAccounts = new ArrayList<>();
 
-    LocalRepo localRepo = new LocalRepo();
+    LocalRepo localRepo = LocalRepo.getInstance();
     /*-------------------------------------------------------------------*/
 
     // Can only be accessed when logged in.
@@ -41,7 +41,7 @@ public class AdminAccountService {
                     allClients
                             .stream()
                             .filter(client -> client.getUserName()
-                                    .equals(localRepo.getUserName()))
+                                    .equals(bankAccount.getClient().getUserName()))
                             .findFirst();
             bankAccount.setClient(getClient.get());
             Optional<BankAccount> accountMatch;
@@ -53,6 +53,7 @@ public class AdminAccountService {
                         .filter(account -> account.getAccountNumber()
                                 == accountNumber)
                         .findFirst();
+                bankAccount.setAccountNumber(accountNumber);
             } while (accountMatch.isPresent());
             return accountRepo.save(bankAccount);
         }catch (NoSuchElementException e){

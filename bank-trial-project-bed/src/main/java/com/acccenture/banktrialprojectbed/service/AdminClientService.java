@@ -127,7 +127,7 @@ public class AdminClientService {
                                     == client.getClientId())
                     .findFirst();
             Client foundClient = checkingUsername.get();
-            foundClient.setArchived(true);
+            foundClient.setIsArchived(true);
             clientRepo.save(foundClient);
             return BankException.ACCOUNT_ARCHIVED;
         }catch (NoSuchElementException e){

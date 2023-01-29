@@ -143,7 +143,7 @@ class Admin_ClientServiceTest {
                 allClients
                         .stream()
                         .filter(client -> client.getUserName().equals(localRepo.getUserName())).findFirst();
-        expectedClient.get().setArchived(true);
+        expectedClient.get().setIsArchived(true);
 
         Optional<Client> findClient =
                 allClients

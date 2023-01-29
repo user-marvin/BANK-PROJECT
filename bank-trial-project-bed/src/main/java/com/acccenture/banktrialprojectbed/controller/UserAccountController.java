@@ -49,4 +49,19 @@ public class UserAccountController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(userAccountService.transferMoney(accountDetails));
     }
+
+    @PutMapping("/useCredit")
+    public ResponseEntity<BankAccount> useCredit
+            (@RequestBody AccountDetails accountDetails)
+            throws BankException {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userAccountService.useCreditCard(accountDetails));
+    }
+    @PutMapping("/payCredit")
+    public ResponseEntity<BankAccount> payCredit
+            (@RequestBody AccountDetails accountDetails)
+            throws BankException {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userAccountService.payCredit(accountDetails));
+    }
 }

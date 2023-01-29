@@ -38,13 +38,13 @@ public class Client {
     private String userName;
     @Column(name = "password")
     private String password;
-    @Column(name = "archived")
-    private Boolean archived;
+    @Column(name = "is_archived")
+    private Boolean isArchived;
 
 
     // 0 = Client // 1 = Admin
-    @Column(name = "admin_user")
-    private Boolean adminUser;
+    @Column(name = "is_admin")
+    private Boolean isAdmin;
 
     public Client(
             String fullName
@@ -61,8 +61,8 @@ public class Client {
         this.birthDate = birthDate;
         this.userName = userName;
         this.password = password;
-        this.archived = archived;
-        this.adminUser = adminUser;
+        this.isArchived = archived;
+        this.isAdmin = adminUser;
     }
 
     @Override
@@ -80,8 +80,8 @@ public class Client {
                 && Objects.equals(birthDate, client.birthDate)
                 && Objects.equals(userName, client.userName)
                 && Objects.equals(password, client.password)
-                && Objects.equals(archived, client.archived)
-                && Objects.equals(adminUser, client.adminUser);
+                && Objects.equals(isArchived, client.isArchived)
+                && Objects.equals(isAdmin, client.isAdmin);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class Client {
                 , birthDate
                 , userName
                 , password
-                , archived
-                , adminUser);
+                , isArchived
+                , isAdmin);
     }
 }
