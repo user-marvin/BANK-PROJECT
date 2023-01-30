@@ -1,0 +1,29 @@
+.admin-login-container{
+  border: 2px solid black;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  margin: 0 auto;
+  margin-top: 5%;
+  min-height: 400px;
+}
+.header-container{
+  margin-top: 30px;
+  height: 130px;
+}
+.header-container h1, h3{
+  color: rgb(71, 71, 71);
+}
+.textfield-container{
+  margin: 15px 0;
+}
+.textfield{
+  margin: 8px;
+}
+.textfield p{
+  color: rgb(255, 63, 63);
+}
+.button-container{
+  height: 70px;
+}
