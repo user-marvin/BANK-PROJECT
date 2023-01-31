@@ -17,7 +17,7 @@ export const adminLoginReducer = createSlice({
             state.isLoading = false;
             state.error = action.payload.error;
         },
-        logout(state, action){
+        logout(state){
             state.userInfo = null;
             state.error = null;
         },
@@ -26,3 +26,23 @@ export const adminLoginReducer = createSlice({
 });
 
 export const adminLoginActions = adminLoginReducer.actions;
+
+export const getAllAccountsReducer = createSlice({
+    name: "getAllAccountsReducer",
+    initialState:{
+        allAccounts: null,
+        error: null
+    },
+    reducers: {
+        getAllAccountsSucess(state, action){
+            state.allAccounts = action.payload.allAccounts;
+            state.error = null
+        },
+        getAllAccountsFail(state, action){
+            state.allAccounts = null;
+            state.error = action.payload.error
+        }
+    }
+});
+
+export const getAllAccountsActions = getAllAccountsReducer.actions;

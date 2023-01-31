@@ -1,14 +1,15 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import { TextField, Button } from '@mui/material'
 import styles from "./AdminLogin.module.css"
 import { useFormik } from 'formik'
 import * as Yup from "yup"
 import { useDispatch, useSelector } from 'react-redux'
 import { adminLogin } from '../../redux-actions/adminClientActions'
+import { useNavigate } from 'react-router-dom'
 
 function AdminLogin() {
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
     const loggedUser = useSelector((state) => state.adminLogin);
     const {userInfo, error} = loggedUser;
 
@@ -28,13 +29,15 @@ function AdminLogin() {
                     userName: formik.values.userName,
                     password: formik.values.password
                 }
-                dispatch({type: "clientLogin"}, adminLogin(loginDetails, dispatch));
+                dispatch(adminLogin(loginDetails, dispatch));
+                // dispatch({type: "clientLogin"}, adminLogin(loginDetails, dispatch));
             }
         }
     });
     useEffect (() => {
         if(userInfo!=null){
             console.log(userInfo)
+            navigate("/adminDashBoard");
         }
         if(error!=null){
             alert(error)

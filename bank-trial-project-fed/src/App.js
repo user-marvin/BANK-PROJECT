@@ -2,6 +2,8 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import AdminLogin from './components/AdminLogin/AdminLogin';
 import ClientLogin from './components/ClientLogin/ClientLogin';
+import AdminDashBoard from './components/AdminDashBoard/AdminDashBoard';
+
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 function App() {
@@ -11,13 +13,13 @@ function App() {
   const {userInfo, error} = loggedUser;
 
   useEffect(() => {
-    // if(userInfo!=null){
-    //   console.log(userInfo)
-    // }
+    if(userInfo!=null){
+      console.log(userInfo)
+    }
 
-    // if(error!=null){
-    //   console.log(loggedUser)
-    // }
+    if(error!=null){
+      console.log(loggedUser)
+    }
   }, [userInfo, error])
 
 
@@ -27,6 +29,7 @@ function App() {
       <Routes>
           <Route path="/" element={<ClientLogin/>}/>
           <Route path="/adminLogin" element={<AdminLogin/>}/>
+          <Route path="/adminDashBoard" element={<AdminDashBoard/>}/>
       </Routes>
     </div>
   );

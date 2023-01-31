@@ -1,0 +1,47 @@
+.dashboard-main-container{
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    height:400px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px rgba(179, 179, 179, 0.7);
+}
+.nav-bar-container{
+    height: 50px;
+    width: 100%;
+    display: flex;
+}
+.dashboard-icon-container{
+    box-shadow: 0px 0px 2px rgb(59, 141, 189);
+    border-radius: 3px;
+    width: fit-content;
+    height: fit-content;
+    margin: 1px 10px;
+    cursor: pointer;
+}
+.transactions-container{
+    display: flex;
+    flex-direction: row;
+    width: 85%;
+}
+.box-container{
+    cursor: pointer;                                                                                                                        
+    width: 25%;
+    height: 50px;
+    transition: height 0.5s ease-in-out;
+    transition: 0.3s;
+    border-radius: 8px;
+    margin: 0 10px;
+    box-shadow: 0px 0px 5px rgba(82, 82, 82, 0.7);
+}
+.box-container h3:nth-child(2){
+    font-size: 16px;
+}
+.logout-container{
+    display: flex;
+    width: fit-content;
+    float: right;
+    cursor: pointer;
+    margin: 8px 20px;
+}
