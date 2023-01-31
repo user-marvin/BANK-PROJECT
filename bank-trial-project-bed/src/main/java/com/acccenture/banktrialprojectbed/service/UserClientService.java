@@ -39,12 +39,14 @@ public class UserClientService {
                             .findFirst();
             if (loginClient.isPresent()){
                 localRepo.setUserName(loginHelper.getUserName());
+                return loginClient.get();
+            }else{
+                throw new BankException
+                        (BankException.USERNAME_PASSWORD_INCORRECT);
             }
-            return loginClient.get();
         }catch (NullPointerException e){
             throw new BankException
-                    (BankException.USERNAME_PASSWORD_INCORRECT
-                            , e.getCause());
+                    (e.getCause());
         }
     }
     public Client register(Client client) throws BankException {

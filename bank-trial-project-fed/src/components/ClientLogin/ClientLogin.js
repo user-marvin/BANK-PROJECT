@@ -1,17 +1,17 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import { TextField, Button } from '@mui/material'
-import styles from "./AdminLogin.module.css"
+import styles from "./ClientLogin.module.css"
 import { useFormik } from 'formik'
 import * as Yup from "yup"
 import { useDispatch, useSelector } from 'react-redux'
-import { adminLogin } from '../../redux-actions/adminClientActions'
+import { clientLogin } from '../../redux-actions/userClientActions'
 
-function AdminLogin() {
+function ClientLogin() {
     const dispatch = useDispatch();
 
-    const loggedUser = useSelector((state) => state.adminLogin);
+    const loggedUser = useSelector((state) => state.clientLogin)
     const {userInfo, error} = loggedUser;
-
+    
     const formik = useFormik({
         initialValues: {
             userName: "",
@@ -28,7 +28,7 @@ function AdminLogin() {
                     userName: formik.values.userName,
                     password: formik.values.password
                 }
-                dispatch({type: "clientLogin"}, adminLogin(loginDetails, dispatch));
+                dispatch({type: "clientLogin"}, clientLogin(loginDetails, dispatch));
             }
         }
     });
@@ -41,10 +41,10 @@ function AdminLogin() {
         }
     }, [userInfo, error])
     return (
-        <div className={styles["admin-login-container"]}>
+        <div className={styles["client-login-container"]}>
             <div className={styles["header-container"]}>
                 <h1>Welcome Back!</h1>
-                <h3>Administrator Login</h3>
+                <h3>User Login</h3>
             </div>
             <form onSubmit={formik.handleSubmit}>
                 <div className={styles["textfield-container"]}>
@@ -57,7 +57,7 @@ function AdminLogin() {
                             size="small" 
                             value={formik.values.userName} 
                             onChange={formik.handleChange}/>
-                        <p>{formik.errors.userName? "Please enter a valid username": ""}</p>
+                        <p>{formik.errors.userName? "Please enter a valid username": null}</p>
                     </div>
                     <div className={styles["textfield"]}>
                         <TextField 
@@ -69,7 +69,7 @@ function AdminLogin() {
                             size="small" 
                             value={formik.values.password} 
                             onChange={formik.handleChange}/>
-                        <p>{formik.errors.password? "Please enter your password": ""}</p>
+                        <p>{formik.errors.password? "Please enter your password": null}</p>
                     </div>
                 </div>
                 <div className={styles["button-container"]}>
@@ -84,4 +84,4 @@ function AdminLogin() {
     )
 }
 
-export default AdminLogin
+export default ClientLogin

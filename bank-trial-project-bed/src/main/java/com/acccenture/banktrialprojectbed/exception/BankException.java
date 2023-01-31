@@ -35,6 +35,10 @@ public class BankException extends Exception{
         super(message);
     }
 
+    public BankException(Throwable cause) {
+        super(cause);
+    }
+
     public BankException(String message, Throwable cause) {
         super(message, cause);
     }

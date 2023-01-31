@@ -38,12 +38,15 @@ public class AdminClientService {
                     .findFirst();
             if (loginClient.isPresent()){
                 localRepo.setUserName(loginHelper.getUserName());
+                return loginClient.get();
+            } else{
+                throw new BankException
+                        (BankException.USERNAME_PASSWORD_INCORRECT);
             }
-            return loginClient.get();
+
+
         }catch (NullPointerException e){
-            throw new BankException
-                    (BankException.USERNAME_PASSWORD_INCORRECT
-                            , e.getCause());
+            throw new BankException(e.getCause());
         }
     }
 
