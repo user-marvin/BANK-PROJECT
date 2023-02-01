@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { TextField, Button } from '@mui/material'
 import styles from "./AdminLogin.module.css"
 import { useFormik } from 'formik'
@@ -6,21 +6,21 @@ import * as Yup from "yup"
 import { useDispatch, useSelector } from 'react-redux'
 import { adminLogin } from '../../redux-actions/adminClientActions'
 import { useNavigate } from 'react-router-dom'
-
+import Swal from 'sweetalert2'
 function AdminLogin() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const loggedUser = useSelector((state) => state.adminLogin);
     const {userInfo, error} = loggedUser;
-
+    const [submitClicked, setSubmitClicked] = useState(false);
     const formik = useFormik({
         initialValues: {
             userName: "",
             password: ""
         },
         validationSchema: Yup.object({
-            userName: Yup.string().min(5),
-            password: Yup.string().min(5)
+            userName: Yup.string().min(5).required("required"),
+            password: Yup.string().min(5).required("required")
         }),
         onSubmit : () => {
             if(formik.values.userName.length>=5 && formik.values.password.length>=5){
@@ -29,8 +29,9 @@ function AdminLogin() {
                     userName: formik.values.userName,
                     password: formik.values.password
                 }
-                dispatch(adminLogin(loginDetails, dispatch));
-                // dispatch({type: "clientLogin"}, adminLogin(loginDetails, dispatch));
+                // dispatch(adminLogin(loginDetails, dispatch));
+                dispatch({type: "clientLogin"}, adminLogin(loginDetails, dispatch));
+                setSubmitClicked(true);
             }
         }
     });
@@ -39,10 +40,18 @@ function AdminLogin() {
             console.log(userInfo)
             navigate("/adminDashBoard");
         }
-        if(error!=null){
-            alert(error)
+        if(error!=null && submitClicked==true){
+            Swal.fire({
+                title: error,
+                text: null,
+                icon: 'warning',
+                showCancelButton: false,
+                confirmButtonText: 'Ok',
+                cancelButtonText: null
+            });
+            setSubmitClicked(false);
         }
-    }, [userInfo, error])
+    }, [userInfo, error, submitClicked])
     return (
         <div className={styles["admin-login-container"]}>
             <div className={styles["header-container"]}>

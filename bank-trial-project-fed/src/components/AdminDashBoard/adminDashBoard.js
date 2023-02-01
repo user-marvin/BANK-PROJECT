@@ -18,8 +18,6 @@ function AdminDashBoard() {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.adminLogin);
     const {userInfo} = user;
-    const accounts = useSelector((state) => state.getAllAccount);
-    const {allAccounts, error} = accounts;
     
     const handleLogout = () =>{
         Swal.fire({
@@ -35,21 +33,14 @@ function AdminDashBoard() {
             }
         });      
     }
-    useEffect(() => {
+    useEffect(() => { 
         if(userInfo==null){
             navigate("/adminLogin")
         }
-    }, [userInfo])
-    useEffect(() => {
-        if(allAccounts != null){
-            console.log(allAccounts)
-        }
-        if(error!= null){
-            console.log(error)
-        }
-    }, [allAccounts, error])
+    }, [userInfo, navigate])
+    
     const getAllUsers = () => {
-        dispatch({type: "getAllAccountsReducer"},getAllClient(dispatch));
+        navigate("/allAccounts")
     }
     return (
         <div className={styles["dashboard-main-container"]}>

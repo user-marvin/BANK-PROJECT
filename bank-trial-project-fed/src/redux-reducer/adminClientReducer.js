@@ -34,7 +34,7 @@ export const getAllAccountsReducer = createSlice({
         error: null
     },
     reducers: {
-        getAllAccountsSucess(state, action){
+        getAllAccountssuccess(state, action){
             state.allAccounts = action.payload.allAccounts;
             state.error = null
         },
@@ -46,3 +46,103 @@ export const getAllAccountsReducer = createSlice({
 });
 
 export const getAllAccountsActions = getAllAccountsReducer.actions;
+
+export const getAccountReducer = createSlice({
+    name: "getAccountReducer",
+    initialState:{
+        account: null,
+        error: null
+    },
+    reducers: {
+        getAccountsuccess(state, action){
+            state.account = action.payload.account;
+            state.error = null
+        },
+        getAccountFail(state, action){
+            state.account = null;
+            state.error = action.payload.error
+        }
+    }
+});
+
+export const getAccountActions = getAccountReducer.actions;
+
+export const registerAccountReducer = createSlice({
+    name: "registerAccountReducer",
+    initialState:{
+        account: null,
+        error: null
+    },
+    reducers: {
+        registerAccountsuccess(state, action){
+            state.account = action.payload.account;
+            state.error = null
+        },
+        registerAccountFail(state, action){
+            state.account = null;
+            state.error = action.payload.error
+        }
+    }
+});
+
+export const registerAccountActions = registerAccountReducer.actions;
+
+export const updateAccountReducer = createSlice({
+    name: "updateAccountReducer",
+    initialState:{
+        account: null,
+        error: null
+    },
+    reducers: {
+        updateAccountsuccess(state, action){
+            state.account = action.payload.account;
+            state.error = null
+        },
+        updateAccountFail(state, action){
+            state.account = null;
+            state.error = action.payload.error
+        }
+    }
+});
+
+export const updateAccountActions = updateAccountReducer.actions;
+
+export const archiveAccountReducer = createSlice({
+    name: "archiveAccountReducer",
+    initialState:{
+        account: null,
+        error: null
+    },
+    reducers: {
+        archiveAccountsuccess(state, action){
+            state.account = action.payload.account;
+            state.error = null
+        },
+        archiveAccountFail(state, action){
+            state.account = null;
+            state.error = action.payload.error
+        }
+    }
+});
+
+export const archiveAccountActions = archiveAccountReducer.actions;
+
+export const deleteAccountReducer = createSlice({
+    name: "deleteAccountReducer",
+    initialState:{
+        status: null,
+        error: null
+    },
+    reducers: {
+        deleteAccountsuccess(state, action){
+            state.status = action.payload.status;
+            state.error = null
+        },
+        deleteAccountFail(state, action){
+            state.status = null;
+            state.error = action.payload.error
+        }
+    }
+});
+
+export const deleteAccountActions = deleteAccountReducer.actions;

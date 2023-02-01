@@ -44,13 +44,13 @@ public class UserClientController {
                 .body(userClientService.viewClient(userName));
     }
 
-    @PutMapping("/archiveClient")
+    @PutMapping("/archiveClient/{id}")
     public ResponseEntity<String> archiveClient
-            (@RequestBody Client client)
+            (@RequestParam int id)
             throws BankException {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userClientService.archiveClient(client));
+                .body(userClientService.archiveClient(id));
     }
 
     @PutMapping("updateAccount")

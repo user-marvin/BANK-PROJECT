@@ -1,25 +1,25 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { TextField, Button } from '@mui/material'
 import styles from "./ClientLogin.module.css"
 import { useFormik } from 'formik'
 import * as Yup from "yup"
 import { useDispatch, useSelector } from 'react-redux'
 import { clientLogin } from '../../redux-actions/userClientActions'
-
+import Swal from 'sweetalert2'
 function ClientLogin() {
     const dispatch = useDispatch();
 
     const loggedUser = useSelector((state) => state.clientLogin)
     const {userInfo, error} = loggedUser;
-    
+    const [submitClicked, setSubmitClicked] = useState(false);
     const formik = useFormik({
         initialValues: {
             userName: "",
             password: ""
         },
         validationSchema: Yup.object({
-            userName: Yup.string().min(5),
-            password: Yup.string().min(5)
+            userName: Yup.string().min(5).required("required"),
+            password: Yup.string().min(5).required("required")
         }),
         onSubmit : () => {
             if(formik.values.userName.length>=5 && formik.values.password.length>=5){
@@ -30,16 +30,25 @@ function ClientLogin() {
                 }
                 dispatch({type: "clientLogin"}, clientLogin(loginDetails, dispatch));
             }
+            setSubmitClicked(true)
         }
     });
     useEffect (() => {
         if(userInfo!=null){
             console.log(userInfo)
         }
-        if(error!=null){
-            alert(error)
+        if(error!=null && submitClicked == true){
+            Swal.fire({
+                title: error,
+                text: null,
+                icon: 'warning',
+                showCancelButton: false,
+                confirmButtonText: 'Ok',
+                cancelButtonText: null
+            });
+            setSubmitClicked(false)
         }
-    }, [userInfo, error])
+    }, [userInfo, error, submitClicked])
     return (
         <div className={styles["client-login-container"]}>
             <div className={styles["header-container"]}>

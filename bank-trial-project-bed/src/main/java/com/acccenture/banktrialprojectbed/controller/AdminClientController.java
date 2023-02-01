@@ -61,13 +61,13 @@ public class AdminClientController {
                 .body(adminClientService.updateClient(client));
     }
 
-    @PutMapping("/archiveClient")
+    @PutMapping("/archiveClient/{id}")
     public ResponseEntity<String> archiveClient
-            (@RequestBody Client client)
+            (@PathVariable int id)
             throws BankException {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(adminClientService.archiveClient(client));
+                .body(adminClientService.archiveClient(id));
     }
 
     @DeleteMapping("/deleteClient/{id}")

@@ -120,17 +120,17 @@ public class AdminClientService {
 
 
     // Archive a Client. Privilege: admin, client
-    public String archiveClient(Client client) throws BankException {
+    public String archiveClient(int id) throws BankException {
         allClients = clientRepo.findAll();
         try{
             Optional<Client> checkingUsername = allClients
                     .stream().
                     filter(clients ->
                             clients.getClientId()
-                                    == client.getClientId())
+                                    == id)
                     .findFirst();
             Client foundClient = checkingUsername.get();
-            foundClient.setIsArchived(true);
+            foundClient.setIsArchived(!foundClient.getIsArchived());
             clientRepo.save(foundClient);
             return BankException.ACCOUNT_ARCHIVED;
         }catch (NoSuchElementException e){
